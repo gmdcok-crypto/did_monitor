@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>DID Monitor — 운영 대시보드</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+    <div class="app-bg" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="9" fill="url(#g)" />
+              <path d="M9 11h6v10H9V11zm8-2h6v14h-6V9z" fill="#0b0f14" opacity=".92" />
+              <defs>
+                <linearGradient id="g" x1="8" y1="4" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#7dd3fc" />
+                  <stop offset="1" stop-color="#34d399" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+          <div class="brand__text">
+            <h1 class="brand__title">DID Monitor</h1>
+            <p class="brand__subtitle">고객별 DID 배포 · 한 화면 요약</p>
+          </div>
+        </div>
+        <div class="topbar__meta">
+          <span class="env-pill" id="env-pill">Production</span>
+          <time class="sync-time" id="sync-time" datetime="">동기화 시각 —</time>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <section class="intro">
+        <h2 class="intro__heading">인스턴스</h2>
+        <p class="intro__lede">
+          Railway · 공개 URL · R2 · MySQL 메타와 디바이스 요약을 한곳에서 확인합니다. 데이터는 추후 DB·동기화 API와 연결됩니다.
+        </p>
+      </section>
+
+      <div id="alert-root" class="alert-root" hidden></div>
+
+      <section class="grid" id="instance-grid" aria-live="polite"></section>
+    </main>
+
+    <footer class="footer">
+      <p class="footer__note">
+        비밀번호·API 키·토큰은 UI에 저장하지 않습니다. 제어·감사 로그는 이후 단계에서 연동합니다.
+      </p>
+    </footer>
+
+    <script src="/js/app.js" defer></script>
+  </body>
+</html>

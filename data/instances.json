@@ -1,0 +1,53 @@
+{
+  "updatedAt": "2026-04-15T00:00:00.000Z",
+  "instances": [
+    {
+      "id": "cust-demo-01",
+      "label": "데모 고객 A",
+      "status": "healthy",
+      "railway": {
+        "projectName": "did-customer-a",
+        "projectId": "prj_••••••••",
+        "serviceName": "web"
+      },
+      "publicUrl": "https://did-a-production.up.railway.app",
+      "r2": {
+        "bucket": "did-a-assets",
+        "publicBaseUrl": "https://assets.example.com/did-a"
+      },
+      "mysql": {
+        "databaseName": "railway"
+      },
+      "metrics": {
+        "devicesTotal": 128,
+        "devicesOnline": 112,
+        "devicesOffline": 16,
+        "lastSyncedAt": "2026-04-15T11:42:00.000Z"
+      }
+    },
+    {
+      "id": "cust-demo-02",
+      "label": "데모 고객 B",
+      "status": "degraded",
+      "railway": {
+        "projectName": "did-customer-b",
+        "projectId": "prj_••••••••",
+        "serviceName": "api"
+      },
+      "publicUrl": "https://api.customer-b.example.com",
+      "r2": {
+        "bucket": "did-b-storage",
+        "publicBaseUrl": "https://pub-•••.r2.dev"
+      },
+      "mysql": {
+        "databaseName": "did_prod"
+      },
+      "metrics": {
+        "devicesTotal": 54,
+        "devicesOnline": 48,
+        "devicesOffline": 6,
+        "lastSyncedAt": "2026-04-15T11:38:00.000Z"
+      }
+    }
+  ]
+}

@@ -5,7 +5,11 @@
   "description": "DID operations / monitoring (placeholder service)",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
   },
   "engines": {
     "node": ">=18"
