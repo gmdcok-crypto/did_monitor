@@ -4,6 +4,7 @@
   const grid = document.getElementById("instance-grid");
   const alertRoot = document.getElementById("alert-root");
   const syncTimeEl = document.getElementById("sync-time");
+  const rowCountEl = document.getElementById("row-count");
 
   function escapeHtml(s) {
     return String(s)
@@ -44,37 +45,40 @@
     return Math.round((online / total) * 1000) / 10;
   }
 
-  function renderCard(inst) {
+  function renderRow(inst) {
     const online = inst.metrics?.devicesOnline ?? 0;
+    const offline = inst.metrics?.devicesOffline ?? 0;
     const total = inst.metrics?.devicesTotal ?? 0;
     const p = pct(online, total);
     const railway = inst.railway || {};
     const r2 = inst.r2 || {};
     const mysql = inst.mysql || {};
+    const railwayLabel =
+      [railway.projectName, railway.serviceName].filter(Boolean).join(" / ") || "—";
 
     return (
-      '<article class="card">' +
-      '<div class="card__head">' +
-      "<div>" +
-      '<h3 class="card__title">' +
+      "<tr>" +
+      '<td><div class="cell-customer">' +
+      '<span class="cell-customer__name">' +
       escapeHtml(inst.label || "이름 없음") +
-      "</h3>" +
-      '<p class="card__id">' +
+      "</span>" +
+      '<span class="cell-customer__id">' +
       escapeHtml(inst.id || "") +
-      "</p>" +
-      "</div>" +
-      '<span class="status ' +
+      "</span></div></td>" +
+      "<td><span class=\"status " +
       statusClass(inst.status) +
       '">' +
       escapeHtml(statusLabel(inst.status)) +
-      "</span>" +
-      "</div>" +
-      '<dl class="meta-block">' +
-      '<div class="meta-row"><dt>Railway</dt><dd class="mono">' +
-      escapeHtml([railway.projectName, railway.serviceName].filter(Boolean).join(" · ") || "—") +
-      "</dd></div>" +
-      '<div class="meta-row"><dt>공개 URL</dt><dd><div class="url-line">' +
-      '<span class="mono">' +
+      "</span></td>" +
+      '<td><span class="mono cell-clip" title="' +
+      escapeHtml(railwayLabel) +
+      '">' +
+      escapeHtml(railwayLabel) +
+      "</span></td>" +
+      "<td><div class=\"cell-url\">" +
+      '<span class="mono" title="' +
+      escapeHtml(inst.publicUrl || "") +
+      '">' +
       escapeHtml(inst.publicUrl || "—") +
       "</span>" +
       (inst.publicUrl
@@ -82,40 +86,58 @@
           escapeHtml(inst.publicUrl) +
           '">복사</button>'
         : "") +
-      "</div></dd></div>" +
-      '<div class="meta-row"><dt>R2</dt><dd class="mono">' +
+      "</div></td>" +
+      '<td><span class="mono cell-clip" title="' +
+      escapeHtml(r2.bucket || "") +
+      '">' +
       escapeHtml(r2.bucket || "—") +
-      (r2.publicBaseUrl ? " · " + escapeHtml(r2.publicBaseUrl) : "") +
-      "</dd></div>" +
-      '<div class="meta-row"><dt>MySQL</dt><dd class="mono">' +
+      "</span></td>" +
+      '<td><span class="mono">' +
       escapeHtml(mysql.databaseName || "—") +
-      "</dd></div>" +
-      "</dl>" +
-      '<div class="metrics">' +
-      '<div class="metrics__row">' +
-      '<div class="metric"><span class="metric__label">디바이스</span>' +
-      '<span class="metric__value">' +
+      "</span></td>" +
+      '<td class="num">' +
       escapeHtml(String(total)) +
-      ' <small>대</small></span></div>' +
-      '<div class="metric"><span class="metric__label">온라인</span>' +
-      '<span class="metric__value">' +
+      "</td>" +
+      '<td class="num">' +
       escapeHtml(String(online)) +
-      ' <small>/ ' +
-      escapeHtml(String(inst.metrics?.devicesOffline ?? 0)) +
-      " 오프라인</small></span></div>" +
-      '<div class="metric"><span class="metric__label">가동률</span>' +
-      '<span class="metric__value">' +
+      "</td>" +
+      '<td class="num">' +
+      escapeHtml(String(offline)) +
+      "</td>" +
+      '<td class="num"><div class="uptime">' +
+      "<span>" +
       escapeHtml(String(p)) +
-      "%</span></div>" +
-      "</div>" +
-      '<div class="bar" role="presentation"><div class="bar__fill" style="width:' +
+      "%</span>" +
+      '<span class="uptime__bar" role="presentation"><span class="uptime__fill" style="width:' +
       escapeHtml(String(p)) +
-      '%"></div></div>' +
-      '<p class="metrics__sync">마지막 동기화 · ' +
+      '%"></span></span>' +
+      "</div></td>" +
+      '<td><span class="mono">' +
       escapeHtml(formatDate(inst.metrics?.lastSyncedAt)) +
-      "</p>" +
-      "</div>" +
-      "</article>"
+      "</span></td>" +
+      "</tr>"
+    );
+  }
+
+  function renderTable(list) {
+    return (
+      '<table class="erp-table">' +
+      "<thead><tr>" +
+      "<th>고객</th>" +
+      "<th>상태</th>" +
+      "<th>Railway</th>" +
+      "<th>공개 URL</th>" +
+      "<th>R2 버킷</th>" +
+      "<th>MySQL</th>" +
+      '<th class="num">디바이스</th>' +
+      '<th class="num">온라인</th>' +
+      '<th class="num">오프라인</th>' +
+      '<th class="num">가동률</th>' +
+      "<th>동기화</th>" +
+      "</tr></thead>" +
+      "<tbody>" +
+      list.map(renderRow).join("") +
+      "</tbody></table>"
     );
   }
 
@@ -125,7 +147,9 @@
   }
 
   function formatEnvLabel(raw) {
-    const s = String(raw || "").trim().replace(/_/g, " ");
+    const s = String(raw || "")
+      .trim()
+      .replace(/_/g, " ");
     if (!s) return "Production";
     return s
       .split(/\s+/)
@@ -156,6 +180,7 @@
       showError("인스턴스 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
       grid.innerHTML =
         '<p class="empty">데이터를 표시할 수 없습니다. 서버 로그를 확인해 주세요.</p>';
+      if (rowCountEl) rowCountEl.textContent = "0건";
       return;
     }
 
@@ -163,15 +188,18 @@
     syncTimeEl.textContent = "문서 기준 시각 · " + formatDate(data.updatedAt);
 
     const list = Array.isArray(data.instances) ? data.instances : [];
+    if (rowCountEl) rowCountEl.textContent = list.length + "건";
+
     if (list.length === 0) {
-      grid.innerHTML = '<p class="empty">등록된 인스턴스가 없습니다. 데이터 소스를 연결하면 여기에 표시됩니다.</p>';
+      grid.innerHTML =
+        '<p class="empty">등록된 인스턴스가 없습니다. 데이터 소스를 연결하면 여기에 표시됩니다.</p>';
       return;
     }
 
-    grid.innerHTML = list.map(renderCard).join("");
+    grid.innerHTML = renderTable(list);
 
     requestAnimationFrame(() => {
-      grid.querySelectorAll(".bar__fill").forEach((el) => {
+      grid.querySelectorAll(".uptime__fill").forEach((el) => {
         const w = el.style.width;
         el.style.width = "0%";
         requestAnimationFrame(() => {

@@ -45,16 +45,23 @@
     </header>
 
     <main id="main" class="main">
-      <section class="intro">
-        <h2 class="intro__heading">인스턴스</h2>
-        <p class="intro__lede">
-          Railway · 공개 URL · R2 · MySQL 메타와 디바이스 요약을 한곳에서 확인합니다. 데이터는 추후 DB·동기화 API와 연결됩니다.
+      <section class="toolbar">
+        <div class="toolbar__left">
+          <h2 class="toolbar__heading">인스턴스 목록</h2>
+          <p class="toolbar__meta" id="row-count">0건</p>
+        </div>
+        <p class="toolbar__hint">
+          Railway · URL · R2 · MySQL · 디바이스 요약을 표로 확인합니다.
         </p>
       </section>
 
       <div id="alert-root" class="alert-root" hidden></div>
 
-      <section class="grid" id="instance-grid" aria-live="polite"></section>
+      <section class="table-panel" aria-live="polite">
+        <div class="table-scroll" id="instance-grid">
+          <p class="empty">불러오는 중…</p>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">
