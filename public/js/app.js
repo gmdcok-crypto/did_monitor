@@ -185,14 +185,17 @@
     }
 
     syncTimeEl.dateTime = data.updatedAt || "";
-    syncTimeEl.textContent = "문서 기준 시각 · " + formatDate(data.updatedAt);
+    const sourceLabel = data.source === "mysql" ? "MySQL" : data.source === "mock" ? "목업" : "데이터";
+    syncTimeEl.textContent = sourceLabel + " · " + formatDate(data.updatedAt);
 
     const list = Array.isArray(data.instances) ? data.instances : [];
     if (rowCountEl) rowCountEl.textContent = list.length + "건";
 
     if (list.length === 0) {
       grid.innerHTML =
-        '<p class="empty">등록된 인스턴스가 없습니다. 데이터 소스를 연결하면 여기에 표시됩니다.</p>';
+        data.source === "mysql"
+          ? '<p class="empty">MySQL <code>monitor_instances</code> 테이블에 등록된 고객이 없습니다. 고객 행을 INSERT 하면 이 표에 표시됩니다.</p>'
+          : '<p class="empty">등록된 인스턴스가 없습니다. 데이터 소스를 연결하면 여기에 표시됩니다.</p>';
       return;
     }
 
