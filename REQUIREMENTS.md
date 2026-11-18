@@ -27,6 +27,15 @@
 - **고객(인스턴스)별 디바이스 수**, 온라인/오프라인 수 등 **종합 지표**.
 - 데이터는 **각 DID 인스턴스의 DB**에 있으므로, 중앙 앱이 **각 DID API를 호출**하거나 **주기적 동기화** 같은 설계가 필요함.
 
+### 구현됨: API 요약 방식
+
+1. 고객 DID(`gmdcok-crypto/did`)에 `GET /api/monitor/summary` 추가  
+   - 헤더 `X-Monitor-Token` = Railway `MONITOR_TOKEN`
+2. `did_monitor`가 등록된 `publicUrl`로 위 API 호출  
+   - 환경변수 `MONITOR_TOKEN` (공통) 또는 DB `monitor_token` (고객별)
+3. 응답의 devices/campaigns/schedules/contents 를 대시보드에 표시  
+   - `GET /api/instances` 로드 시 라이브 수집 (기본 ON)
+
 ---
 
 ## 4. 제어 기능 (선택·추가 가능 범위)

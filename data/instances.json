@@ -2,51 +2,51 @@
   "updatedAt": "2026-04-15T00:00:00.000Z",
   "instances": [
     {
-      "id": "cust-demo-01",
-      "label": "데모 고객 A",
-      "status": "healthy",
+      "id": "smdv",
+      "label": "SMDV",
+      "status": "offline",
       "railway": {
-        "projectName": "did-customer-a",
-        "projectId": "prj_••••••••",
+        "projectName": "did-smdv",
+        "projectId": "",
         "serviceName": "web"
       },
-      "publicUrl": "https://did-a-production.up.railway.app",
+      "publicUrl": "https://did-production-6b71.up.railway.app",
       "r2": {
-        "bucket": "did-a-assets",
-        "publicBaseUrl": "https://assets.example.com/did-a"
+        "bucket": "",
+        "publicBaseUrl": ""
       },
       "mysql": {
         "databaseName": "railway"
       },
       "metrics": {
-        "devicesTotal": 128,
-        "devicesOnline": 112,
-        "devicesOffline": 16,
-        "lastSyncedAt": "2026-04-15T11:42:00.000Z"
+        "devicesTotal": 0,
+        "devicesOnline": 0,
+        "devicesOffline": 0,
+        "lastSyncedAt": null
       }
     },
     {
-      "id": "cust-demo-02",
-      "label": "데모 고객 B",
-      "status": "degraded",
+      "id": "did-default",
+      "label": "DID 기본",
+      "status": "offline",
       "railway": {
-        "projectName": "did-customer-b",
-        "projectId": "prj_••••••••",
-        "serviceName": "api"
+        "projectName": "did",
+        "projectId": "",
+        "serviceName": "web"
       },
-      "publicUrl": "https://api.customer-b.example.com",
+      "publicUrl": "https://did-production-ac7b.up.railway.app",
       "r2": {
-        "bucket": "did-b-storage",
-        "publicBaseUrl": "https://pub-•••.r2.dev"
+        "bucket": "",
+        "publicBaseUrl": ""
       },
       "mysql": {
-        "databaseName": "did_prod"
+        "databaseName": "railway"
       },
       "metrics": {
-        "devicesTotal": 54,
-        "devicesOnline": 48,
-        "devicesOffline": 6,
-        "lastSyncedAt": "2026-04-15T11:38:00.000Z"
+        "devicesTotal": 0,
+        "devicesOnline": 0,
+        "devicesOffline": 0,
+        "lastSyncedAt": null
       }
     }
   ]
